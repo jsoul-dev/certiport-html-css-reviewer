@@ -40,6 +40,11 @@ All questions live in `js/questions.js` in the `QUESTIONS` array. Each question 
 
 Keep `questions.js` loading before `app.js` in `index.html`.
 
+## Official Resources & Links
+- **Certiport Account Portal**: [https://app.certiport.com/portal/login](https://app.certiport.com/portal/login) (Required for taking the ITS certification exam)
+- **GMetrix Practice Tests**: [https://www.gmetrix.net/](https://www.gmetrix.net/) (Skill assessment & exam simulation tests)
+- **Exam Schedule**: [Google Sheets Master Schedule](https://docs.google.com/spreadsheets/d/1kMO4v5IoigfsxkgO_2-Wx_gq3kCFe-6G/view) (Wednesday, October 28, 2026 @ 2:00 PM PHT • CICT-LAB-4)
+
 ## Notes
 - Scripts are plain `<script>` tags (not ES modules) so the page also works when opened directly from disk.
 - Progress is stored per browser and does not sync between devices.
