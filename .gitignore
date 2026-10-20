@@ -1,0 +1,11 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Never commit secrets (the Gemini API key is entered in the browser, not stored in code)
+.env
+*.key
