@@ -314,6 +314,7 @@
         (q.isAIClone ? ` ✨ (AI Clone of Q${q.clonedFromId})` : '') +
         (activeQuestionIds.length < QUESTIONS.length ? ` [${currentIndex + 1}/${activeQuestionIds.length} filtered]` : '');
       document.getElementById('questionCategoryBadge').textContent = q.category;
+      document.getElementById('questionCategoryBadge').title = q.category;
 
       // Type badge
       const typeLabels = {

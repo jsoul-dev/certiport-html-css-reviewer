@@ -247,13 +247,6 @@ body {
     padding: 0.35rem 0.5rem;
     gap: 0.35rem;
   }
-  header.compass-topbar > div:first-child {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.3rem;
-  }
   header.compass-topbar #questionCounterText {
     font-size: 0.85rem;
     font-weight: 700;
@@ -261,17 +254,10 @@ body {
   header.compass-topbar #questionCategoryBadge {
     font-size: 0.68rem;
     padding: 2px 6px;
-    max-width: 150px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  header.compass-topbar > div:nth-child(2) {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.25rem;
   }
   header.compass-topbar #modePracticeBtn,
   header.compass-topbar #modeExamBtn {
@@ -287,17 +273,6 @@ body {
   header.compass-topbar button,
   header.compass-topbar a.compass-btn {
     font-size: 0.68rem;
-    padding: 3px 6px;
-  }
-  header.compass-topbar > div:last-child {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.25rem;
-  }
-  header.compass-topbar > div:last-child > div {
-    font-size: 0.7rem;
     padding: 3px 6px;
   }
 
