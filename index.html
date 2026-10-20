@@ -7,6 +7,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Favicon & Touch Icons -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0f172a">
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
@@ -276,6 +284,7 @@
         <div>
           <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Time Remaining Until Exam:</div>
           <div id="examCountdownModal"></div>
+          <div id="examTimeSyncNotice" class="hidden text-[10px] text-slate-500 text-center mt-1.5 flex items-center justify-center gap-1"></div>
         </div>
 
         <!-- Mandatory Certiport Account Card -->

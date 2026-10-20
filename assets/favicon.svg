@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+
+    <!-- HTML5 Orange Gradient -->
+    <linearGradient id="htmlGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff6b35" />
+      <stop offset="100%" stop-color="#e44d26" />
+    </linearGradient>
+
+    <!-- CSS3 Blue Gradient -->
+    <linearGradient id="cssGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <!-- Gold Certification Ribbon Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Outer Squircle with subtle border glow -->
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#bgGrad)" stroke="#38bdf8" stroke-opacity="0.35" stroke-width="8" />
+
+  <!-- Inner Subtle Accent Ring -->
+  <rect x="28" y="28" width="456" height="456" rx="96" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="2" />
+
+  <!-- Split Shield Core (HTML5 Left / CSS3 Right) -->
+  <g transform="translate(256, 215)">
+    <!-- Left Shield: HTML5 Orange -->
+    <path d="M 0,-130 L -120,-130 L -98,90 L 0,125 Z" fill="url(#htmlGrad)" />
+    <!-- Right Shield: CSS3 Blue -->
+    <path d="M 0,-130 L 120,-130 L 98,90 L 0,125 Z" fill="url(#cssGrad)" />
+
+    <!-- Subtle Inner Shield Shadow on Right Half -->
+    <path d="M 0,-130 L 120,-130 L 98,90 L 0,125 Z" fill="#000000" fill-opacity="0.08" />
+
+    <!-- Dark Center Code Plate -->
+    <path d="M 0,-110 L -95,-110 L -78,72 L 0,102 L 78,72 L 95,-110 Z" fill="#0a0f1d" fill-opacity="0.92" />
+
+    <!-- Code Glyph </ > -->
+    <!-- Left Angle Bracket < (HTML Orange tint) -->
+    <path d="M -26,-45 L -62,-8 L -26,29" fill="none" stroke="#ff7a45" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <!-- Forward Slash / (Crisp Gold Accent) -->
+    <path d="M 12,-55 L -12,42" fill="none" stroke="url(#goldGrad)" stroke-width="15" stroke-linecap="round" />
+    
+    <!-- Right Angle Bracket > (CSS Sky Blue tint) -->
+    <path d="M 26,-45 L 62,-8 L 26,29" fill="none" stroke="#38bdf8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- Certification Ribbon / Banner below shield -->
+  <g transform="translate(256, 395)">
+    <!-- Ribbon Base Plate -->
+    <rect x="-140" y="-22" width="280" height="44" rx="22" fill="#0f172a" stroke="url(#goldGrad)" stroke-width="3.5" filter="url(#softGlow)" />
+    
+    <!-- Gold Certification Star Left -->
+    <polygon points="-114,-5 -118,5 -108,1 -116,9 -110,-9" fill="#facc15" />
+    <!-- Gold Certification Star Right -->
+    <polygon points="114,-5 118,5 108,1 116,9 110,-9" fill="#facc15" />
+    
+    <!-- CERTIPORT ITS Label -->
+    <text x="0" y="8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="900" fill="#f8fafc" text-anchor="middle" letter-spacing="3.5">
+      CERTIPORT
+    </text>
+  </g>
+</svg>

@@ -1306,12 +1306,86 @@
     // ============================================================================
     // Target: October 28, 2026 14:00 (2:00 PM) Manila Time (GMT+8)
     const EXAM_TARGET_TIME = new Date('2026-10-28T14:00:00+08:00').getTime();
+    let networkTimeOffsetMs = 0;
+    let networkTimeSynced = false;
+    let localClockDesyncedNotice = '';
+
+    async function syncNetworkTime() {
+      try {
+        let serverTimestamp = null;
+
+        // 1. Same-origin HEAD request to get exact atomic HTTP Date response header (fastest, no third-party reliance)
+        if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+          try {
+            const res = await fetch(window.location.href, { method: 'HEAD', cache: 'no-store' });
+            const dateStr = res.headers.get('date');
+            if (dateStr) {
+              const parsed = new Date(dateStr).getTime();
+              if (!isNaN(parsed) && parsed > 0) serverTimestamp = parsed;
+            }
+          } catch (e) {
+            // fallback to public API below
+          }
+        }
+
+        // 2. Fallback to public UTC time API (e.g. if loaded via file:// protocol or Date header was stripped)
+        if (!serverTimestamp) {
+          try {
+            const res = await fetch('https://timeapi.io/api/time/current/zone?timeZone=UTC', { cache: 'no-store' });
+            if (res.ok) {
+              const data = await res.json();
+              if (data && data.dateTime) {
+                const parsed = new Date(data.dateTime + 'Z').getTime();
+                if (!isNaN(parsed) && parsed > 0) serverTimestamp = parsed;
+              }
+            }
+          } catch (e) {
+            // offline fallback
+          }
+        }
+
+        if (serverTimestamp) {
+          const localNow = Date.now();
+          const offset = serverTimestamp - localNow;
+          networkTimeOffsetMs = offset;
+          networkTimeSynced = true;
+
+          // If local device clock differs by more than 1 minute (60,000 ms)
+          const diffMinutes = Math.round(Math.abs(offset) / 60000);
+          if (Math.abs(offset) > 60000) {
+            const diffHours = (Math.abs(offset) / 3600000).toFixed(1);
+            const timeDesc = diffMinutes >= 120 ? `${diffHours} hours` : `${diffMinutes} mins`;
+            const direction = offset > 0 ? 'behind' : 'ahead';
+            localClockDesyncedNotice = `Device clock is ${timeDesc} ${direction}; auto-synced with network time.`;
+            console.warn(`[NetworkTimeSync] ${localClockDesyncedNotice}`);
+          } else {
+            localClockDesyncedNotice = '';
+          }
+          updateExamCountdown();
+        }
+      } catch (err) {
+        console.log('[NetworkTimeSync] Using local system clock:', err.message);
+      }
+    }
 
     function updateExamCountdown() {
-      const now = Date.now();
+      const now = Date.now() + networkTimeOffsetMs;
       const diff = EXAM_TARGET_TIME - now;
       const headerEl = document.getElementById('examCountdownHeader');
       const modalCountdownEl = document.getElementById('examCountdownModal');
+      const syncNoticeEl = document.getElementById('examTimeSyncNotice');
+
+      if (syncNoticeEl) {
+        if (networkTimeSynced && localClockDesyncedNotice) {
+          syncNoticeEl.className = 'text-[11px] text-amber-900 bg-amber-50 border border-amber-300 rounded px-2.5 py-1.5 mt-2 text-center font-medium shadow-xs';
+          syncNoticeEl.innerHTML = `⚠️ <span>${localClockDesyncedNotice}</span>`;
+        } else if (networkTimeSynced) {
+          syncNoticeEl.className = 'text-[10px] text-slate-400 text-center mt-1.5 flex items-center justify-center gap-1';
+          syncNoticeEl.innerHTML = `<span>🌐</span> <span>Network time synchronized</span>`;
+        } else {
+          syncNoticeEl.className = 'hidden';
+        }
+      }
 
       if (diff <= 0) {
         if (headerEl) headerEl.textContent = 'Exam Day!';
@@ -2107,4 +2181,5 @@ Create a concise, high-impact "Last-Minute ITS Exam Cram Sheet" with:
       renderCurrentQuestion();
       updateTimerUI();
       updateExamCountdown();
+      syncNetworkTime();
     };
