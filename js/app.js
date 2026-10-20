@@ -1301,6 +1301,74 @@
     }
 
     // ============================================================================
+    // EXAM SCHEDULE & CERTIPORT REGISTRATION NOTICE
+    // ============================================================================
+    // Target: October 28, 2026 14:00 (2:00 PM) Manila Time (GMT+8)
+    const EXAM_TARGET_TIME = new Date('2026-10-28T14:00:00+08:00').getTime();
+
+    function updateExamCountdown() {
+      const now = Date.now();
+      const diff = EXAM_TARGET_TIME - now;
+      const headerEl = document.getElementById('examCountdownHeader');
+      const modalCountdownEl = document.getElementById('examCountdownModal');
+
+      if (diff <= 0) {
+        if (headerEl) headerEl.textContent = 'Exam Day!';
+        if (modalCountdownEl) {
+          modalCountdownEl.innerHTML = '<div class="p-3 bg-emerald-100 border border-emerald-400 rounded text-emerald-950 font-bold text-center">🎉 Exam session has started or completed! Good luck!</div>';
+        }
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      if (headerEl) {
+        headerEl.textContent = `${days}d ${hours}h ${minutes}m`;
+      }
+
+      if (modalCountdownEl) {
+        modalCountdownEl.innerHTML = `
+          <div class="grid grid-cols-4 gap-2 text-center">
+            <div class="bg-slate-100 border border-slate-300 rounded p-2">
+              <div class="text-xl sm:text-2xl font-black text-slate-800 font-mono">${days}</div>
+              <div class="text-[10px] uppercase font-bold text-slate-500">Days</div>
+            </div>
+            <div class="bg-slate-100 border border-slate-300 rounded p-2">
+              <div class="text-xl sm:text-2xl font-black text-slate-800 font-mono">${hours}</div>
+              <div class="text-[10px] uppercase font-bold text-slate-500">Hours</div>
+            </div>
+            <div class="bg-slate-100 border border-slate-300 rounded p-2">
+              <div class="text-xl sm:text-2xl font-black text-slate-800 font-mono">${minutes}</div>
+              <div class="text-[10px] uppercase font-bold text-slate-500">Mins</div>
+            </div>
+            <div class="bg-slate-100 border border-slate-300 rounded p-2">
+              <div class="text-xl sm:text-2xl font-black text-sky-700 font-mono">${seconds}</div>
+              <div class="text-[10px] uppercase font-bold text-slate-500">Secs</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function openExamNoticeModal() {
+      const modal = document.getElementById('examNoticeModal');
+      if (!modal) return;
+      updateExamCountdown();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeExamNoticeModal() {
+      const modal = document.getElementById('examNoticeModal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // ============================================================================
     // GEMINI API INTEGRATION (TEXT, STRUCTURED JSON CLONES, & TTS AUDIO)
     // ============================================================================
     // Optional Gemini API key for standalone browser use. The key is stored only in this browser's
@@ -2003,6 +2071,7 @@ Create a concise, high-impact "Last-Minute ITS Exam Cram Sheet" with:
         // Persist the remaining exam time periodically, even when the learner is not changing answers.
         if (timerSeconds % 5 === 0) saveStateToStorage();
       }
+      updateExamCountdown();
     }, 1000);
 
     // Keyboard navigation for fast spamming
@@ -2016,6 +2085,11 @@ Create a concise, high-impact "Last-Minute ITS Exam Cram Sheet" with:
         checkCurrentAnswer();
       } else if ((e.key === 'r' || e.key === 'R') && examMode === 'practice') {
         resetCurrentQuestion();
+      } else if (e.key === 'Escape') {
+        closeExamNoticeModal();
+        closeAITutorModal();
+        closeSummaryModal();
+        closeScoreReportModal();
       }
     });
 
@@ -2031,4 +2105,5 @@ Create a concise, high-impact "Last-Minute ITS Exam Cram Sheet" with:
       updateFilterOptionCounts();
       renderCurrentQuestion();
       updateTimerUI();
+      updateExamCountdown();
     };
