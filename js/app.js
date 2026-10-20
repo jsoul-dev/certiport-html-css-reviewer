@@ -2,9 +2,10 @@
     // ============================================================================
     // APPLICATION STATE & LOCALSTORAGE PERSISTENCE
     // ============================================================================
-    const STORAGE_KEY = 'its_html_css_reviewer_state_v2';
+    const STORAGE_KEY = 'its_html_css_reviewer_state_v3';
+    const LEGACY_STORAGE_KEY = 'its_html_css_reviewer_state_v2';
     let examMode = 'practice'; // 'practice' | 'exam'
-    let instantCheck = false;
+    let instantCheck = true;
     let activeQuestionIds = QUESTIONS.map(q => q.id);
     let currentIndex = 0; // index inside activeQuestionIds
     let selectedBankItem = null; // For click-to-place in drag & drop questions
@@ -50,7 +51,12 @@
 
     function loadStateFromStorage() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        let raw = localStorage.getItem(STORAGE_KEY);
+        let isFromLegacy = false;
+        if (!raw) {
+          raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+          if (raw) isFromLegacy = true;
+        }
         if (!raw) return false;
         const data = JSON.parse(raw);
         if (!data || typeof data !== 'object') return false;
@@ -78,7 +84,11 @@
         if (data.examMode === 'practice' || data.examMode === 'exam') {
           examMode = data.examMode;
         }
-        instantCheck = !!data.instantCheck;
+        if (isFromLegacy || typeof data.instantCheck !== 'boolean') {
+          instantCheck = true;
+        } else {
+          instantCheck = data.instantCheck;
+        }
         const instantToggle = document.getElementById('instantCheckToggle');
         if (instantToggle) instantToggle.checked = instantCheck;
 
@@ -951,6 +961,7 @@
     function resetAllQuestions() {
       try {
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(LEGACY_STORAGE_KEY);
       } catch (e) {}
       // Remove any session-generated AI clones so it returns to the clean 40 official questions
       while (QUESTIONS.length > 40) {
@@ -963,6 +974,9 @@
       currentStreak = 0;
       timerSeconds = 50 * 60;
       currentIndex = 0;
+      instantCheck = true;
+      const instantToggle = document.getElementById('instantCheckToggle');
+      if (instantToggle) instantToggle.checked = true;
       renderCurrentQuestion();
     }
 
@@ -2011,6 +2025,8 @@ Create a concise, high-impact "Last-Minute ITS Exam Cram Sheet" with:
       if (!restored) {
         initUserState();
       }
+      const instantToggle = document.getElementById('instantCheckToggle');
+      if (instantToggle) instantToggle.checked = instantCheck;
       setExamMode(examMode);
       updateFilterOptionCounts();
       renderCurrentQuestion();
